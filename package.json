@@ -1,0 +1,19 @@
+{
+  "name": "epitech-ecommerce",
+  "version": "1.0.0",
+  "description": "mon projet e-commerce pour epitech",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AydinMuhammed/EPITECH-ecommerce.git"
+  },
+  "author": "Muhammed Aydin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AydinMuhammed/EPITECH-ecommerce/issues"
+  },
+  "homepage": "https://github.com/AydinMuhammed/EPITECH-ecommerce#readme"
+}
