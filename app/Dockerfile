@@ -1,8 +1,8 @@
 # Use the official PHP-FPM image
 FROM php:8.2-fpm
 
-# Set environment variables
-ENV APP_ENV=prod
+# Set environment variables, ENV APP_ENV=prod ou ENV APP_ENV=dev
+ENV APP_ENV=dev
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 # Install system dependencies and PHP extensions
@@ -25,7 +25,10 @@ WORKDIR /app
 COPY . /app
 
 # Install Symfony dependencies without development packages
-RUN composer install --no-dev --optimize-autoloader --classmap-authoritative
+# Pour PROD
+# RUN composer install --no-dev --optimize-autoloader --classmap-authoritative
+# Pour DEV
+RUN composer install --optimize-autoloader --classmap-authoritative
 
 # Set correct permissions for Symfony folders
 RUN mkdir -p /app/var/cache /app/var/log && chown -R www-data:www-data /app

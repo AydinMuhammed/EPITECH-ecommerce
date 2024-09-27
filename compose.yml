@@ -7,7 +7,8 @@ services:
     volumes:
       - ./app:/app
     environment:
-      - APP_ENV=prod
+      - APP_ENV=dev # mettre APP_ENV=prod si plus besoin
+      - APP_DEBUG=1 # supprimer cette ligne si plus d'usage
     expose:
       - 9000
     networks:
