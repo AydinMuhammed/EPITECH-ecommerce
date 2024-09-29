@@ -54,9 +54,18 @@ export const useAuth = () => {
     router.push('/')
   }, [router])
 
+  const checkAuthAndRedirect = useCallback(async (redirectPath: string) => {
+    await checkAuthStatus()
+    if (isLoggedIn) {
+      router.push(redirectPath)
+      return true
+    }
+    return false
+  }, [checkAuthStatus, isLoggedIn, router])
+
   useEffect(() => {
     checkAuthStatus()
   }, [checkAuthStatus])
 
-  return { isLoggedIn, user, handleLogin, handleLogout, checkAuthStatus }
+  return { isLoggedIn, user, handleLogin, handleLogout, checkAuthStatus, checkAuthAndRedirect }
 }

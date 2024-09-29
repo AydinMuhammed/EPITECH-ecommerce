@@ -33,7 +33,9 @@ export default function Navbar() {
           </Link>
           {isLoggedIn && user ? (
             <>
-              <span className="text-white">{user.username || 'Utilisateur'}</span>
+              <span className="bg-blue-400 bg-opacity-30 px-3 py-1 rounded-full text-white font-medium">
+                {user.username || 'Utilisateur'}
+              </span>
               <button
                 onClick={handleLogout}
                 className="flex items-center text-white hover:text-blue-200 focus:outline-none"

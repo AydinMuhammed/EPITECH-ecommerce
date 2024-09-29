@@ -1,20 +1,27 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useApi } from '../../hooks/useApi'
 import { useAuth } from '../../hooks/useAuth'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import Navbar from '../../components/Navbar'
 
 export default function LoginPage() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [loginError, setLoginError] = useState('')
   const { fetchApi, loading, error } = useApi()
-  const { handleLogin } = useAuth()
+  const { handleLogin, checkAuthAndRedirect } = useAuth()
   const router = useRouter()
+
+  useEffect(() => {
+    checkAuthAndRedirect('/')
+  }, [checkAuthAndRedirect])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoginError('')  // Réinitialiser l'erreur de connexion
     try {
       const data = await fetchApi('/api/login_check', {
         method: 'POST',
@@ -29,9 +36,20 @@ export default function LoginPage() {
         localStorage.setItem('user', JSON.stringify({ username: email }))
         await handleLogin(email, password)
         router.push('/')
+      } else {
+        setLoginError('Échec de la connexion. Veuillez vérifier vos informations.')
       }
     } catch (err) {
       console.error('Erreur de connexion', err)
+      if (err instanceof Error) {
+        if (err.message.includes('401')) {
+          setLoginError('Nom d\'utilisateur ou mot de passe incorrect.')
+        } else {
+          setLoginError('Une erreur est survenue lors de la connexion. Veuillez réessayer.')
+        }
+      } else {
+        setLoginError('Une erreur inattendue est survenue. Veuillez réessayer.')
+      }
     }
   }
 
@@ -92,7 +110,17 @@ export default function LoginPage() {
               </button>
             </div>
           </form>
+          {loginError && <p className="mt-2 text-center text-sm text-red-600">{loginError}</p>}
           {error && <p className="mt-2 text-center text-sm text-red-600">{error}</p>}
+          
+          <div className="mt-4 text-center">
+            <p className="text-sm text-gray-600">
+              Pas encore de compte ?{' '}
+              <Link href="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
+                Créez-en un !
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>
