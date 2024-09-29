@@ -55,6 +55,7 @@ services:
       - NODE_ENV=production
     depends_on:
       - db    # If Next.js needs data from the database or API, you can make it depend on db or php-fpm
+      - nginx  # Assurez-vous que le front dépend du back-end via nginx
     networks:
       - default
 
