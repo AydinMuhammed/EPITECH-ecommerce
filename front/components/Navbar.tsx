@@ -33,7 +33,7 @@ export default function Navbar() {
           </Link>
           {isLoggedIn && user ? (
             <>
-              <span className="text-white">{user.username}</span>
+              <span className="text-white">{user.username || 'Utilisateur'}</span>
               <button
                 onClick={handleLogout}
                 className="flex items-center text-white hover:text-blue-200 focus:outline-none"

@@ -4,7 +4,6 @@ import { useApi } from './useApi'
 
 type User = {
   username: string;
-  // Ajoutez d'autres propriétés si nécessaire
 };
 
 export const useAuth = () => {
@@ -15,17 +14,15 @@ export const useAuth = () => {
 
   const checkAuthStatus = useCallback(async () => {
     const token = localStorage.getItem('token')
-    if (token) {
-      try {
-        const userData: User = await fetchApi('/api/users')
-        setUser(userData)
-        setIsLoggedIn(true)
-      } catch (error) {
-        console.error('Erreur lors de la vérification du statut d\'authentification:', error)
-        await handleLogout()
-      }
+    const storedUser = localStorage.getItem('user')
+    if (token && storedUser) {
+      setUser(JSON.parse(storedUser))
+      setIsLoggedIn(true)
+    } else {
+      setIsLoggedIn(false)
+      setUser(null)
     }
-  }, [fetchApi])
+  }, [])
 
   const handleLogin = async (username: string, password: string) => {
     try {
@@ -38,7 +35,9 @@ export const useAuth = () => {
       })
       if (data.token) {
         localStorage.setItem('token', data.token)
-        await checkAuthStatus()
+        localStorage.setItem('user', JSON.stringify({ username }))
+        setUser({ username })
+        setIsLoggedIn(true)
         return true
       }
     } catch (error) {
@@ -49,6 +48,7 @@ export const useAuth = () => {
 
   const handleLogout = useCallback(async () => {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     setIsLoggedIn(false)
     setUser(null)
     router.push('/')

@@ -10,7 +10,7 @@ import { useAuth } from '../hooks/useAuth'
 
 export default function Home() {
   const [mounted, setMounted] = useState(false)
-  const { checkAuthStatus } = useAuth()
+  const { checkAuthStatus, isLoggedIn, user } = useAuth()
 
   useEffect(() => {
     setMounted(true)
@@ -33,7 +33,7 @@ export default function Home() {
                 className="lg:w-1/2 mb-12 lg:mb-0"
               >
                 <h1 className="text-5xl lg:text-6xl font-extrabold text-blue-900 mb-6 leading-tight">
-                  Bienvenue chez <br />
+                  {isLoggedIn && user ? `Bienvenue ${user.username} chez` : 'Bienvenue chez'} <br />
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">
                     BOYS&apos; FINNY MEALS
                   </span>

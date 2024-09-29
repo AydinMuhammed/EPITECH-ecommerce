@@ -26,6 +26,7 @@ export default function LoginPage() {
       console.log('Connexion réussie', data)
       if (data.token) {
         localStorage.setItem('token', data.token)
+        localStorage.setItem('user', JSON.stringify({ username: email }))
         await handleLogin(email, password)
         router.push('/')
       }
